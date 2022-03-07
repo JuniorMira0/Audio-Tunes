@@ -32,6 +32,7 @@ class Login extends React.Component {
   };
 
   submitOnClick = async (event) => {
+    // preventDefault para a pag não recarregar
     event.preventDefault();
     const { loginName } = this.state;
     this.setState({ loading: true });
@@ -47,12 +48,12 @@ class Login extends React.Component {
     if (loading === false && redirect === false) {
       return (
         <div className="container" data-testid="page-login">
-          <form onSubmit={this.submitOnClick}>
+          <form onSubmit={ this.submitOnClick }>
             <p>Welcome to Trybe Tunes</p>
             <br />
             <input
               name="name"
-              onChange={this.onChange}
+              onChange={ this.onChange }
               type="text"
               placeholder="Name"
               data-testid="login-name-input"
@@ -63,7 +64,7 @@ class Login extends React.Component {
             <button
               type="submit"
               data-testid="login-submit-button"
-              disabled={isLengthEnough}
+              disabled={ isLengthEnough }
             >
               Entrar
             </button>

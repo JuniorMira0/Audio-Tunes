@@ -1,6 +1,7 @@
 import React from 'react';
 import { getUser } from '../../services/userAPI';
 import Loading from '../Loading/Loading';
+import './Header.css';
 
 export default class Header extends React.Component {
   constructor() {
@@ -9,7 +10,7 @@ export default class Header extends React.Component {
     this.state = {
       userName: '',
       loading: false,
-      user: false,
+      name: false,
     };
   }
 
@@ -24,6 +25,7 @@ export default class Header extends React.Component {
       loading: false,
       name: true,
     });
+    return user.name;
   };
 
   render() {
@@ -45,5 +47,4 @@ export default class Header extends React.Component {
     }
     return <Loading />;
   }
-  q;
 }
