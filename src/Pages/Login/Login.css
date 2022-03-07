@@ -74,7 +74,7 @@ form button[type='text']:focus {
   box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
 }
 
-button:disabled {
+button:disabled:hover {
   background: rgba(231, 9, 9, 0.486);
 }
 
