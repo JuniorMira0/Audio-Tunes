@@ -1,5 +1,6 @@
 import React from 'react';
 import { getUser } from '../../services/userAPI';
+import Loading from '../Loading/Loading';
 
 export default class Header extends React.Component {
   constructor() {
@@ -7,6 +8,8 @@ export default class Header extends React.Component {
 
     this.state = {
       userName: '',
+      loading: false,
+      user: false,
     };
   }
 
@@ -18,19 +21,29 @@ export default class Header extends React.Component {
     const user = await getUser();
     this.setState({
       userName: user.name,
+      loading: false,
+      name: true,
     });
   };
 
   render() {
-    const { userName } = this.state;
-    return (
-      <header data-testid="header-component">
-        <div>
-          <span className="userName" data-testid="header-user-name">
-            {userName}
-          </span>
-        </div>
-      </header>
-    );
+    const { userName, loading, name } = this.state;
+    if (loading === false && name === true) {
+      return (
+        <header data-testid="header-component">
+          <div>
+            <h3>Trybe Tunes</h3>
+            <span className="userName" data-testid="header-user-name">
+              {userName}
+            </span>
+          </div>
+        </header>
+      );
+    }
+    if (loading === true && name === false) {
+      return <Loading />;
+    }
+    return <Loading />;
   }
+  q;
 }
