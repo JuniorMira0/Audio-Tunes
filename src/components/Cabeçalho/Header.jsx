@@ -54,7 +54,7 @@ export default class Header extends React.Component {
 
             <Link
               className="link"
-              to="/profile/edit"
+              to="/profile"
               data-testid="link-to-profile"
             >
               Perfil
