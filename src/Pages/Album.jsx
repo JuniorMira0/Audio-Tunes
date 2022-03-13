@@ -22,12 +22,11 @@ class Album extends React.Component {
   hlandleSongs = async () => {
     const { match: { params: { id } } } = this.props; // match contem info sobre como o route path correspondeu a url
     const result = await getMusics(id);
-    this.setState = ({
+    this.setState({
       artistName: result[0].artistName,
       album: result[0].collectionName,
       songList: result,
     });
-    console.log(result[0]);
   }
 
   renderMusic = () => {
@@ -40,7 +39,7 @@ class Album extends React.Component {
         </div>
         <div>
           {songList.map(({ trackName, previewUrl }, index) => {
-            if (index === undefined) {
+            if (index === 0) {
               return null;
             } return (
               <MusicCard
@@ -56,11 +55,12 @@ class Album extends React.Component {
 
   render() {
     const { songList } = this.state;
-
+    console.log(songList);
     return (
       <div data-testid="page-album">
         <Header />
-        { songList ? this.renderMusic() : undefined }
+        {/* {this.renderMusic()} */}
+        { songList.length ? this.renderMusic() : <>Não tem nada</> }
       </div>
     );
   }

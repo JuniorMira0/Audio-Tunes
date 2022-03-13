@@ -87,7 +87,7 @@ class Search extends React.Component {
                       artistName,
                       artworkUrl100,
                     }, index) => (
-                      <div key={ index.artistName } className="album">
+                      <div key={ index } className="album">
                         <Link
                           to={ `/album/${collectionId}` }
                           data-testid={ `link-to-album-${collectionId}` }
