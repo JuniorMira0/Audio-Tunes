@@ -38,7 +38,7 @@ class Album extends React.Component {
           <p data-testid="album-name">{album}</p>
         </div>
         <div>
-          {songList.map(({ trackName, previewUrl }, index) => {
+          {songList.map(({ trackName, previewUrl, trackId }, index) => {
             if (index === 0) {
               return null;
             } return (
@@ -46,6 +46,8 @@ class Album extends React.Component {
                 key={ index }
                 trackName={ trackName }
                 previewUrl={ previewUrl }
+                trackId={ trackId }
+                song={ songList[index] }
               />);
           })}
         </div>
