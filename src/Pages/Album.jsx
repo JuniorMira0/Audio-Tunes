@@ -90,3 +90,5 @@ Album.propTypes = {
     }),
   }),
 }.isRequired;
+
+// teste
