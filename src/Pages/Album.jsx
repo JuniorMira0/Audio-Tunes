@@ -60,7 +60,7 @@ class Album extends React.Component {
                 trackName={ trackName }
                 previewUrl={ previewUrl }
                 trackId={ trackId }
-                song={ favoritas }
+                favoritas={ favoritas }
               />);
           })}
         </div>
