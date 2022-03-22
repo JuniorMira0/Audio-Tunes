@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Cabeçalho/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   constructor(props) {
@@ -12,11 +13,13 @@ class Album extends React.Component {
       songList: [],
       artistName: '',
       album: '',
+      favoritas: [],
     };
   }
 
   componentDidMount() {
     this.hlandleSongs();
+    this.favSongs();
   }
 
   hlandleSongs = async () => {
@@ -29,8 +32,18 @@ class Album extends React.Component {
     });
   }
 
+  favSongs = async () => {
+    const { trackId } = this.props;
+    const fav = await getFavoriteSongs();
+    const favTrack = fav.some((id) => id.trackId === trackId);
+    console.log(favTrack);
+    this.setState({
+      favoritas: favTrack,
+    });
+  }
+
   renderMusic = () => {
-    const { songList, artistName, album } = this.state;
+    const { songList, artistName, album, favoritas } = this.state;
     return (
       <div>
         <div>
@@ -47,7 +60,7 @@ class Album extends React.Component {
                 trackName={ trackName }
                 previewUrl={ previewUrl }
                 trackId={ trackId }
-                song={ songList[index] }
+                song={ favoritas }
               />);
           })}
         </div>
