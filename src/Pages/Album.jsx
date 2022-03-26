@@ -23,24 +23,26 @@ class Album extends React.Component {
   }
 
   hlandleSongs = async () => {
-    const { match: { params: { id } } } = this.props; // match contem info sobre como o route path correspondeu a url
+    const {
+      match: {
+        params: { id },
+      },
+    } = this.props; // match contem info sobre como o route path correspondeu a url
     const result = await getMusics(id);
     this.setState({
       artistName: result[0].artistName,
       album: result[0].collectionName,
       songList: result,
     });
-  }
+  };
 
   favSongs = async () => {
-    const { trackId } = this.props;
     const fav = await getFavoriteSongs();
-    const favTrack = fav.some((id) => id.trackId === trackId);
-    console.log(favTrack);
+    console.log(fav);
     this.setState({
-      favoritas: favTrack,
+      favoritas: fav,
     });
-  }
+  };
 
   renderMusic = () => {
     const { songList, artistName, album, favoritas } = this.state;
@@ -54,28 +56,31 @@ class Album extends React.Component {
           {songList.map(({ trackName, previewUrl, trackId }, index) => {
             if (index === 0) {
               return null;
-            } return (
+            }
+            return (
               <MusicCard
                 key={ index }
                 trackName={ trackName }
                 previewUrl={ previewUrl }
                 trackId={ trackId }
                 favoritas={ favoritas }
-              />);
+                song={ songList[index] }
+                isFavorite={ favoritas.some((id) => id.trackId === trackId) }
+              />
+            );
           })}
         </div>
       </div>
     );
-  }
+  };
 
   render() {
     const { songList } = this.state;
-    console.log(songList);
     return (
       <div data-testid="page-album">
         <Header />
         {/* {this.renderMusic()} */}
-        { songList.length ? this.renderMusic() : <>Não tem nada</> }
+        {songList.length ? this.renderMusic() : <>Não tem nada</>}
       </div>
     );
   }
@@ -86,7 +91,7 @@ export default Album;
 Album.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequirgited,
     }),
   }),
 }.isRequired;
