@@ -1,63 +1,57 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addSong, removeSong } from '../../services/favoriteSongsAPI';
-import Loading from '../Loading/Loading';
 
 export default class MusicCard extends React.Component {
   constructor(props) {
     super(props);
 
+    const { isFavorite } = this.props;
     this.state = {
-      checked: false,
-      loading: false,
+      checked: isFavorite,
     };
   }
 
   addFavoriteSong = async (song) => {
-    this.setState((prevState) => ({
+    const { onAddFavorite, onRemoveFavorite } = this.props;
+    await this.setState((prevState) => ({
       checked: !prevState.checked,
-      loading: true,
     }), async () => {
       const { checked } = this.state;
       if (checked) {
-        await addSong(song);
+        await onAddFavorite(song);
+        console.log('add');
       } else {
-        await removeSong(song);
+        await onRemoveFavorite(song);
+        console.log('remove');
       }
-      this.setState({
-        loading: false,
-      });
     });
   }
 
   render() {
-    const { previewUrl, trackName, trackId, song, isFavorite } = this.props;
-    const { loading, checked } = this.state;
+    const { previewUrl, trackName, trackId, song } = this.props;
+    const { checked } = this.state;
 
     return (
-      loading ? <Loading />
-        : (
-          <div className="MusicCard">
-            <p>{ trackName }</p>
-            <audio data-testid="audio-component" src={ previewUrl } controls>
-              <track kind="captions" />
-              O seu navegador não suporta o elemento
-              <code>audio</code>
+      <div className="MusicCard">
+        <p>{ trackName }</p>
+        <audio data-testid="audio-component" src={ previewUrl } controls>
+          <track kind="captions" />
+          O seu navegador não suporta o elemento
+          <code>audio</code>
 
-            </audio>
-            <label htmlFor="favorite">
-              Favotita
-              <input
-                type="checkbox"
-                name="favorite"
-                id="favorite"
-                data-testid={ `checkbox-music-${trackId}` }
-                onChange={ () => this.addFavoriteSong(song) }
-                checked={ isFavorite || checked }
-              />
-            </label>
-          </div>
-        )
+        </audio>
+        <label htmlFor="favorite">
+          Favotita
+          <input
+            type="checkbox"
+            name="favorite"
+            id="favorite"
+            data-testid={ `checkbox-music-${trackId}` }
+            onChange={ () => this.addFavoriteSong(song) }
+            checked={ checked }
+          />
+        </label>
+      </div>
     );
   }
 }
@@ -68,4 +62,6 @@ MusicCard.propTypes = {
   trackId: PropTypes.number.isRequired,
   song: PropTypes.shape(Object).isRequired,
   isFavorite: PropTypes.bool.isRequired,
+  onAddFavorite: PropTypes.func.isRequired,
+  onRemoveFavorite: PropTypes.func.isRequired,
 };

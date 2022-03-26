@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Header from '../components/Cabeçalho/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard/MusicCard';
-import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
+import Loading from '../components/Loading/Loading';
 
 class Album extends React.Component {
   constructor(props) {
@@ -13,13 +14,15 @@ class Album extends React.Component {
       songList: [],
       artistName: '',
       album: '',
-      favoritas: [],
+      favoritas: null,
+      loading: true,
     };
   }
 
   componentDidMount() {
     this.hlandleSongs();
     this.favSongs();
+    addSong();
   }
 
   hlandleSongs = async () => {
@@ -33,6 +36,7 @@ class Album extends React.Component {
       artistName: result[0].artistName,
       album: result[0].collectionName,
       songList: result,
+      loading: false,
     });
   };
 
@@ -43,6 +47,30 @@ class Album extends React.Component {
       favoritas: fav,
     });
   };
+
+  onAddFavorite = async (song) => {
+    await this.setState(() => ({
+      loading: true,
+    }), async () => {
+      await addSong(song);
+      await this.favSongs();
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
+  onRemoveFavorite = async (song) => {
+    await this.setState(() => ({
+      loading: true,
+    }), async () => {
+      await removeSong(song);
+      await this.favSongs();
+      this.setState({
+        loading: false,
+      });
+    });
+  }
 
   renderMusic = () => {
     const { songList, artistName, album, favoritas } = this.state;
@@ -66,6 +94,8 @@ class Album extends React.Component {
                 favoritas={ favoritas }
                 song={ songList[index] }
                 isFavorite={ favoritas.some((id) => id.trackId === trackId) }
+                onAddFavorite={ () => this.onAddFavorite(songList[index]) }
+                onRemoveFavorite={ () => this.onRemoveFavorite(songList[index]) }
               />
             );
           })}
@@ -75,12 +105,12 @@ class Album extends React.Component {
   };
 
   render() {
-    const { songList } = this.state;
+    const { loading, favoritas } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
         {/* {this.renderMusic()} */}
-        {songList.length ? this.renderMusic() : <>Não tem nada</>}
+        {favoritas !== null && !loading ? this.renderMusic() : <Loading />}
       </div>
     );
   }
