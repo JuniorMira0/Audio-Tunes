@@ -1,4 +1,4 @@
-# Boas vindas ao repositório do projeto TrybeTunes!
+# Boas vindas ao repositório do projeto AudioTunes!
 
 Aqui você vai encontrar os detalhes de como reproduzir esse projeto a partir deste repositório.
 
